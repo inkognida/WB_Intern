@@ -18,7 +18,7 @@ type broker struct {
 
 type Broker interface {
 	Subscribe(context.Context, string) error
-	Close() error
+	Close(context.Context) error
 }
 
 type orderRepository interface {
@@ -49,7 +49,8 @@ func NewBroker(repo orderRepository, cache orderCache, logger *logrus.Logger) Br
 	}
 }
 
-func (b *broker) Close() error {
+// Close ; ctx is for future purpose
+func (b *broker) Close(ctx context.Context) error {
 	err := b.conn.Close()
 	if err != nil {
 		b.logger.Fatalln(err)
